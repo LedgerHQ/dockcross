@@ -48,13 +48,11 @@ jobs:
       - deploy:
           name: Deploy moxiebox-moxie
           command: |
-            docker load -i ~/docker/moxiebox-moxie.tar
             docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-            docker tag dockcross/moxiebox-moxie:latest ledgerhq/moxiebox-moxie:latest
-            docker push ledgerhq/moxiebox-moxie:latest
-            tagged=$(docker images -q -f 'since=dockcross/moxiebox-moxie:latest' --format '{{.Repository}}:{{.Tag}}' | grep moxiebox-moxie|sed 's#dockcross/##g')
-            docker tag "dockcross/${tagged}" "ledgerhq/${tagged}"
-            docker push "ledgerhq/${tagged}"
+            set -x
+            docker load -i ~/docker/moxiebox-moxie.tar
+            docker tag dockcross/moxiebox-moxie:latest ledgerhq/dockcross-moxiebox-moxie:latest
+            docker push ledgerhq/dockcross-moxiebox-moxie:latest
 
 workflows:
     version: 2.1
